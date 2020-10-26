@@ -1,21 +1,48 @@
 <template>
     <div>这是用户列表页
+        <el-table :data="users" style="width: 100%" router>
+            <el-table-column label="id" width="180">
+                <template slot-scope="scope">
+                    <span style="margin-left: 8px">{{ scope.row.id }}</span>
+                </template>
+            </el-table-column>
+            <el-table-column label="姓名" width="180">
+                <template slot-scope="scope">
+                    <el-popover trigger="hover" placement="top">
+                        <p>姓名: {{ scope.row.name }}</p>
+                        <div slot="reference" >
+                            {{ scope.row.name }}
+                        </div>
+                    </el-popover>
+                </template>
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button size="mini" ><router-link :to="`/user/` + scope.row.id">查看用户详情</router-link></el-button>
+
+                    <el-button
+                        size="mini"
+                        type="danger"
+                        @click="del_user(scope.$index, scope.row)">删除</el-button>
+                </template>
+            </el-table-column>
+        </el-table>
         <br>
-        <table border="2">
-            <tr>
-                <td>id</td>
-                <td>名字</td>
-                <td>操作</td>
-            </tr>
-            <tr v-for="(user,index) in  users" :key="index">
-                <td>{{ user.id }}</td>
-                <td>{{ user.name }}</td>
-                <td>
-                    <a href="javascript:void(0);" @click="del_user(index)">删除</a> |
-                    <router-link :to="`/user/${user.id}`">查看用户详情</router-link>
-                </td>
-            </tr>
-        </table>
+<!--        <table border="2">-->
+<!--            <tr>-->
+<!--                <td>id</td>-->
+<!--                <td>名字</td>-->
+<!--                <td>操作</td>-->
+<!--            </tr>-->
+<!--            <tr v-for="(user,index) in  users" :key="index">-->
+<!--                <td>{{ user.id }}</td>-->
+<!--                <td>{{ user.name }}</td>-->
+<!--                <td>-->
+<!--                    <a href="javascript:void(0);" @click="del_user(index)">删除</a> |-->
+<!--                    <router-link :to="`/user/${user.id}`">查看用户详情</router-link>-->
+<!--                </td>-->
+<!--            </tr>-->
+<!--        </table>-->
         <br>
         <button @click="add_user" v-show="!flag">添加用户</button>
         <table v-show="flag" border="0">
@@ -64,10 +91,11 @@ export default {
             else{
                 id = 1
             }
-            if(name){
+            if(this.name){
                 let name = this.name;
                 let age = this.age;
                 let bir = this.bir;
+                console.log(1213)
                 this.users.push({'id': id, 'name': name, 'age': age, 'bir':bir});
                 this.age = '';
                 this.name = '';
