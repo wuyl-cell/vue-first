@@ -11,6 +11,12 @@
         &nbsp;&nbsp;&nbsp;<span>留言总条数：{{contents.length}}</span><br>
         <br>
         &nbsp;&nbsp;&nbsp;<button @click="del_all" v-if="contents.length">删除所有</button>
+        <br>
+        <span>
+            {{ $store.state.count }}
+            <br>
+            <button @click="add">加</button>
+        </span>
     </div>
 </template>
 
@@ -42,6 +48,9 @@ export default {
         del_all(){
             this.contents = []
             localStorage.contents = JSON.stringify(this.contents)
+        },
+        add(){
+            this.$store.commit('add_count')
         }
     },
 
